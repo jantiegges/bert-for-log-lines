@@ -1,6 +1,7 @@
 from logparser import Drain
 import csv
 
+
 def pre_process(log_format, log_file, in_dir='./logs', out_dir='logparser-results/', depth=0.5, st=4):
     """ log line parser that saves result in csv file
     Params:
@@ -21,6 +22,7 @@ def pre_process(log_format, log_file, in_dir='./logs', out_dir='logparser-result
 
     parser = Drain.LogParser(log_format, indir=in_dir, outdir=out_dir,  depth=depth, st=st, rex=regex)
     parser.parse(log_file)
+
 
 def delete_bgl_labels(log_file: str):
     """ gets rid of the labels of the bgl log lines and saves new csv
@@ -43,6 +45,7 @@ def delete_bgl_labels(log_file: str):
 
         for line in logs_no_label:
             writer.writerow(line)
+
 
 def get_labels(log_file: str):
     """ gets labels from log datasets
@@ -68,3 +71,43 @@ def get_labels(log_file: str):
         labels.pop(0)
 
     return labels
+
+
+def get_binary_labels(labels: list):
+    """ returns list with entry 0 for no anomaly and 1 for anomaly
+    Params:
+        labels (list): list with labels of log lines
+    Returns:
+        binary_labels (list): returns list with entry 0 for no anomaly and 1 for anomaly
+    """
+    # get idc of anomaly and non anomaly
+    binary_labels = []
+
+    for i, elem in enumerate(labels):
+        if '-' in elem:
+            binary_labels.append(1)
+        else:
+            binary_labels.append(0)
+
+    return binary_labels
+
+
+def get_idc(labels: list):
+    """ returns idc of lines with anomaly and no anomaly
+    Params:
+        labels (list): list with labels of log lines
+    Returns:
+        idc_anomaly (list): all idc of lines with anomaly 
+        idc_no_anomaly (list): all idc of lines with no anomaly 
+    """
+    # get idc of anomaly and non anomaly
+    idc_anomaly = []
+    idc_no_anomaly = []
+
+    for i, elem in enumerate(labels):
+        if '-' in elem:
+            idc_anomaly.append(i)
+        else:
+            idc_no_anomaly.append(i)
+
+    return idc_anomaly, idc_no_anomaly
