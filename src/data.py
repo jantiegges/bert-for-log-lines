@@ -5,12 +5,12 @@ import csv
 def pre_process(log_format, log_file, in_dir='./logs', out_dir='logparser-results/', depth=0.5, st=4):
     """ log line parser that saves result in csv file
     Params:
-        log_format (string): Log format
-        log_file (string): The input log file name
-        in_dir (string): The input directory of log file
-        out_dir (string): The output directory of parsing results
-        st (float): similarity threshold
+        log_format (str): Log format
+        log_file (str): The input log file name
+        in_dir (str): The input directory of log file
+        out_dir (str): The output directory of parsing results
         depth (float): depth of all leaf nodes
+        st (float): similarity threshold
     """
 
     # Regular expression list for optional preprocessing (default: [])
@@ -90,6 +90,27 @@ def get_binary_labels(labels: list):
             binary_labels.append(0)
 
     return binary_labels
+    
+
+def get_log_labels(log_file: str):
+    """ returns list with actual labels of log lines
+    Params:
+        labels (list): list with labels of log lines
+    Returns:
+        binary_labels (list): returns list with entry 0 for no anomaly and 1 for anomaly
+    """
+
+    labels = []
+    
+    with open(f'logparser-results/{log_file}_structured.csv') as file:
+        reader = csv.reader(file)
+
+        for row in reader:
+            labels.append(row[1])
+
+        labels.pop(0)
+
+    return labels
 
 
 def get_idc(labels: list):

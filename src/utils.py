@@ -19,6 +19,22 @@ def load_logs(file_name: str):
             logs.append(line)
     return logs
 
+
+def load_anomaly_logs(file_name: str):
+    """ Loads only the anomaly logs of a log file into a list of strings 
+    Params:
+        file_name (str): name of the log file
+    Returns:
+        logs (List[str]): list with each line as one list element
+    """
+    with open(file_name) as f:
+        logs = []
+        for line in f:
+            if not (line.startswith("-")):
+                logs.append(line)
+    return logs    
+    
+
 def save_embedding(data, log_file, model_name, processed_flag, label_flag):
     """ saves data to path in .pkl format
     Params:
@@ -113,10 +129,15 @@ def get_local_cosine_distances(embedding, idc_anomaly, idc_no_anomaly, epsilon):
         seen = set()
         idc_local_no_anomaly = [x for x in tmp if x in seen or seen.add(x)]  
 
-        cos_scores_all.append(cos_scores_np[np.ix_(idc_local, idc_local)])
-        cos_scores_n2n.append(cos_scores_np[np.ix_(idc_local_no_anomaly, idc_local_no_anomaly)])
-        cos_scores_a2a.append(cos_scores_np[np.ix_(idc_local_anomaly, idc_local_anomaly)])
-        cos_scores_n2a.append(cos_scores_np[np.ix_(idc_local_no_anomaly, idc_local_anomaly)])
+        cos_scores_all.append(cos_scores_np[np.ix_([i], idc_local)])
+
+        if i in idc_anomaly:
+            cos_scores_a2a.append(cos_scores_np[np.ix_([i], idc_local_anomaly)])
+            cos_scores_n2a.append(cos_scores_np[np.ix_([i], idc_local_no_anomaly)])
+        else:
+            cos_scores_n2n.append(cos_scores_np[np.ix_([i], idc_local_no_anomaly)])
+            cos_scores_n2a.append(cos_scores_np[np.ix_([i], idc_local_anomaly)])
+
 
     return cos_scores_all, cos_scores_n2n, cos_scores_a2a, cos_scores_n2a
 

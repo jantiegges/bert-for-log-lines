@@ -17,7 +17,6 @@ def get_embedding(log_file: str, model_name: str, processed_flag=True, label_fla
         embedding = load_embedding(log_file, model_name, processed_flag, label_flag)
     except:
         model = SentenceTransformer(model_name)
-        # TODO: look at model.encode options (https://www.sbert.net/examples/applications/computing-embeddings/README.html?highlight=encode())
         logs = load_logs(f"./logs/{log_file}")
         embedding = model.encode(logs, show_progress_bar=True)
 

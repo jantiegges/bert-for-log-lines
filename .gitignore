@@ -1,7 +1,2 @@
-embeddings/BGL_2k.log_processed_labelled_all-mpnet-base-v2
-embeddings/BGL_2k.log_processed_unlabelled_all-mpnet-base-v2
-embeddings/BGL_2k.log_unprocessed_labelled_all-mpnet-base-v2
-embeddings/BGL_2k.log_unprocessed_unlabelled_all-mpnet-base-v2
-logparser-results/BGL_2k.log_structured_no_labels.csv
-logparser-results/BGL_2k.log_structured.csv
-logparser-results/BGL_2k.log_templates.csv
+embeddings/*
+logparser-results/*
