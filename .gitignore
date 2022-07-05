@@ -1,2 +1,4 @@
 embeddings/*
+!embeddings/.gitkeep
 logparser-results/*
+!logparser-results/.gitkeep
